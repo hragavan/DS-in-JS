@@ -24,6 +24,7 @@ LinkedList.prototype.append = function(element){
 }
 
 LinkedList.prototype.insertAt = function(position, element) {debugger;
+if(position>=0 && position<=this.count) {
     var prev = null;
     var temp = this.head;                                                        
     var newnode = this.createNode(element);
@@ -37,6 +38,7 @@ LinkedList.prototype.insertAt = function(position, element) {debugger;
         prev.next=newnode;
     else
         this.head = newnode;
+}
 }
 
 LinkedList.prototype.remove = function(element) {
