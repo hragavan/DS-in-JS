@@ -13,6 +13,19 @@ function graph() {
         if (v in adjList) adjList[v].push(w);
         if (w in adjList) adjList[w].push(v);
     };
+    
+    this.addEdgewithWeight = function (v, w, weight) {
+        if (v in adjList){ 
+            var obj ={};
+            obj[w] = weight;
+            adjList[v].push(obj);
+        }
+        if (w in adjList) {
+            var obj ={};
+            obj[v] = weight;
+            adjList[w].push(obj);
+        }
+    };
 
     this.printGraph = function () {
         for (var key in adjList) {
@@ -87,6 +100,64 @@ function graph() {
             }
         }
     }
+    
+    this.isInfinite = function(t1, timeLimit) {
+                    var t2 = new Date().getTime();
+                    if(t2 - t1 > timeLimit) {
+                        return true;
+                    } else return false;
+                }
+    
+    this.getmin = function(q, d){
+        var min = d[q[0]];
+        var element = q[0];
+        var pos = 0;
+        for(var i=1;i<q.length;i++)
+        {
+            if(d[q[i]] < min){
+                min = d[q[i]];
+                element = q[i];
+                pos = i;
+            }
+        }
+        q.splice(pos,1);
+        return element;
+    }
+    
+    this.dijkstra = function(s, d){debugger;
+        var queue = new Array();
+        queue.push(s);
+        var preds = [];
+        var distance = [];
+        for(var i in vertices){
+            distance[vertices[i]] = Infinity;
+            queue.push(vertices[i]);
+        }
+        preds[s]=undefined;
+        distance[s]=0;
+        console.log(distance);
+        var t1 = new Date().getTime();
+        while(queue.length){
+            if(this.isInfinite(t1, 1500000)) {
+                        alert('Loop stopped after 3 seconds')
+                        break;
+            }
+            var curr = this.getmin(queue, distance);
+            var neighbours = adjList[curr];
+            for(var i=0;i<neighbours.length;i++)
+            {
+               var edgeVertex = Object.keys(neighbours[i]);
+               var edgeWeight = neighbours[i][edgeVertex];
+               var total = distance[curr]+edgeWeight;
+               if(total < distance[edgeVertex]){
+                   distance[edgeVertex] = total;
+                   preds[edgeVertex] = curr;
+               }
+                
+            }
+        }
+                                   
+    };
 }
 var g = new graph();
 g.addVertex('a');
@@ -95,13 +166,25 @@ g.addVertex('c');
 g.addVertex('d');
 g.addVertex('e');
 g.addVertex('f');
-g.addEdge('a', 'b');
+/*g.addEdge('a', 'b');
 g.addEdge('a', 'd');
 g.addEdge('a', 'e');
 g.addEdge('b', 'c');
 g.addEdge('d', 'e');
-g.addEdge('e', 'f');
+g.addEdge('e', 'f');*/
+
+g.addEdgewithWeight('a', 'b', 1);
+g.addEdgewithWeight('a', 'c', 2);
+g.addEdgewithWeight('c', 'd', 5);
+g.addEdgewithWeight('b', 'c', 1);
+g.addEdgewithWeight('b', 'd', 10);
+g.dijkstra('a', 'd');
+
+
 //g.addEdge('c', 'b');
 //find shortest path from c to all other vertices in the graph
-g.shortestPath('c');
+//g.shortestPath('c');
 //g.printGraph();
+
+
+
