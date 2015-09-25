@@ -26,6 +26,10 @@ function graph() {
             adjList[w].push(obj);
         }
     };
+    
+    this.directedGraph = function(v, w){
+        if (v in adjList) adjList[v].push(w);
+    };
 
     this.printGraph = function () {
         for (var key in adjList) {
@@ -158,6 +162,60 @@ function graph() {
         }
                                    
     };
+    
+    this.topoUtil = function(v, visited, stack){debugger;
+        var children = adjList[v];
+        visited[v] = 1;
+        for(var i=0;i<children.length;i++)
+        {
+            if(visited[children[i]]==0)
+            	this.topoUtil(children[i], visited, stack);
+        }
+       stack.push(v); 
+    }
+    
+    this.topologicalSort = function(){debugger;
+        var visited = [];
+        var stack = new Array();
+        for(var i=0;i<vertices.length;i++)
+        {            
+            visited[vertices[i]] = 0;
+        }
+        for(var i=0;i<vertices.length;i++)
+        {
+            if(visited[vertices[i]] == 0)
+            	this.topoUtil(vertices[i], visited, stack);
+        }
+        while(stack.length){
+            console.log(stack.pop()+"->");
+        }
+    }
+    //sorted set of words
+    this.topoSortWords = function(input){debugger;
+        var vertices = [];
+        var adjList = [];
+        for(var i=0;i<input.length-1;i++)
+        {
+            for(var j=0;j<input[i].length;j++)
+            {               
+            if(input[i][j] != input[i+1][j])
+            	{
+                    //if vertices not in array already, then push
+                    if(vertices.indexOf(input[i][j])==-1)
+                    	vertices.push(input[i][j]);
+                    if(adjList[input[i][j]]===undefined)
+                        adjList[input[i][j]] = [];
+                    adjList[input[i][j]].push(input[i+1][j]);
+                    
+                    if(vertices.indexOf(input[i+1][j])==-1)
+                    	vertices.push(input[i+1][j]);
+                    if(adjList[input[i+1][j]]===undefined)
+                        adjList[input[i+1][j]] = [];                   
+                    break;
+           		 }
+            }
+        }
+    }
 }
 var g = new graph();
 g.addVertex('a');
@@ -165,20 +223,30 @@ g.addVertex('b');
 g.addVertex('c');
 g.addVertex('d');
 g.addVertex('e');
-g.addVertex('f');
+//g.addVertex('f');
 /*g.addEdge('a', 'b');
 g.addEdge('a', 'd');
 g.addEdge('a', 'e');
 g.addEdge('b', 'c');
 g.addEdge('d', 'e');
-g.addEdge('e', 'f');*/
+g.addEdge('e', 'f');
 
 g.addEdgewithWeight('a', 'b', 1);
 g.addEdgewithWeight('a', 'c', 2);
 g.addEdgewithWeight('c', 'd', 5);
 g.addEdgewithWeight('b', 'c', 1);
 g.addEdgewithWeight('b', 'd', 10);
-g.dijkstra('a', 'd');
+g.dijkstra('a', 'd');*/
+
+g.directedGraph('a','d');
+g.directedGraph('b','d');
+g.directedGraph('a','c');
+g.directedGraph('c','e');
+g.directedGraph('e','b');
+//g.topologicalSort();
+
+var input = ["baa", "abcd", "abca", "cab", "cad"];
+g.topoSortWords(input);
 
 
 //g.addEdge('c', 'b');
