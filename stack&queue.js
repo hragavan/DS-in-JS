@@ -76,6 +76,19 @@ function queueUsing2Stacks(){
     }
     
 }
+//final output wil have stack is asc order, smallest on top
+function sortStack(s1){
+    var s2 = [];
+    //var s2len = s2.length-1;
+    while(s1.length){
+        var x = s1.pop();
+        while(s2.length && s2[s2.length-1] < x){
+            s1.push(s2.pop());
+        }
+        s2.push(x);
+    }
+    console.log(s2);
+}
 
 
 
@@ -89,7 +102,7 @@ ks.push(2,'d');
 ks.push(2,'e');
 ks.push(3,'y');
 ks.pop(1);
-ks.push(3,'z');*/
+ks.push(3,'z');
 debugger;
 var qs = new queueUsing2Stacks();
 qs.enqueue(1);
@@ -99,4 +112,8 @@ qs.enqueue(4);
 qs.enqueue(5);
 console.log(qs.dequeue());
 qs.enqueue(6);
-console.log(qs.dequeue());
+console.log(qs.dequeue());*/
+var s  = new Array(1,2,3,4,5);
+console.log(s);
+sortStack(s);
+console.log(s);
