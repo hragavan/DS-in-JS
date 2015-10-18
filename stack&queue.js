@@ -43,17 +43,44 @@ function kstacks(k,n){
     
 }
 
-function queueUsing2Stacks = function(){
-    var queue = function(){
-       this.stack1 = new Array();
-       this.stack2 = new Array();
+//function sortStack
+
+function queueUsing2Stacks(){
+    function q(){
+        this.stack1 = new Array();
+        this.stack2 = new Array();
+    };
+ var queue = new q();
+    this.enqueue = function(value){
+        if(queue.stack2.length)
+        {
+            //pop s2 to s1
+            while(queue.stack2.length){
+                queue.stack1.push(queue.stack2.pop());
+            }
+        }
+        queue.stack1.push(value);
     }
-    
-    this.enqueue = function(value){}
+    this.dequeue = function(){
+        if(queue.stack2.length) {
+            //pop s2 to s1
+            return queue.stack2.pop();
+        }
+        else{
+            while(queue.stack1.length){
+                queue.stack2.push(queue.stack1.pop());
+            }
+            return queue.stack2.pop();
+        }
+
+    }
     
 }
 
-var ks = new kstacks(3, 15);
+
+
+
+/*var ks = new kstacks(3, 15);
 ks.push(1,'a');
 ks.push(2,'c');
 ks.push(3,'x');
@@ -62,4 +89,14 @@ ks.push(2,'d');
 ks.push(2,'e');
 ks.push(3,'y');
 ks.pop(1);
-ks.push(3,'z');
+ks.push(3,'z');*/
+debugger;
+var qs = new queueUsing2Stacks();
+qs.enqueue(1);
+qs.enqueue(2);
+qs.enqueue(3);
+qs.enqueue(4);
+qs.enqueue(5);
+console.log(qs.dequeue());
+qs.enqueue(6);
+console.log(qs.dequeue());
